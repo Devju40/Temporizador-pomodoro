@@ -10,21 +10,20 @@ const musicaFocoInput = document.querySelector('#alternar-musica')
 const iniciarOuPausarBT = document.querySelector('#start-pause span')
 const iniciarOuPausarBtIcone = document.querySelector('.app__card-primary-butto-icon')
 const tempoNaTela = document.querySelector('#timer')
-const musica = new Audio('/sons/luna-rise-part-one.mp3')
-const audioPlay = new Audio('/sons/play.wav')
-const audioPausa = new Audio('/sons/pause.mp3')
-const audioTempoFinalizado = new Audio('/sons/beep.mp3')
 
-
+const musica = new Audio('./sons/luna-rise-part-one.mp3')
+const audioPlay = new Audio('./sons/play.wav')
+const audioPausa = new Audio('./sons/pause.mp3')
+const audioTempoFinalizado = new Audio('./sons/beep.mp3')
 
 let TempoDecorridoEmSegundos = 1500
 let intervaloId = null
 musica.loop = true
 
-musicaFocoInput.addEventListener('change',()=>{
-    if(musica.paused){
+musicaFocoInput.addEventListener('change', () => {
+    if (musica.paused) {
         musica.play()
-    }else{
+    } else {
         musica.pause()
     }
 })
@@ -49,34 +48,30 @@ longoBt.addEventListener('click', () => {
 
 function alterarContexto(contexto) {
     mostrarTempo()
-    botoes.forEach(function(contexto) {
+    botoes.forEach(function (contexto) {
         contexto.classList.remove('active')
     })
-    html.setAttribute('data-contexto',contexto)
-    banner.setAttribute('src', `/imagens/${contexto}.png`)
+    html.setAttribute('data-contexto', contexto)
+    banner.setAttribute('src', `./imagens/${contexto}.png`)
     switch (contexto) {
         case "foco":
-            titulo.innerHTML=`Otimize sua produtividade,<br>
+            titulo.innerHTML = `Otimize sua produtividade,<br>
                 <strong class="app__title-strong">mergulhe no que importa.</strong>`
-            
-            break;
+            break
         case "descanso-curto":
-            titulo.innerHTML =`Que tal dar uma respirada?,<br>
+            titulo.innerHTML = `Que tal dar uma respirada?,<br>
                 <strong class="app__title-strong">Faça uma pausa curta!</strong>`
-
-                break;
-                case "descanso-longo":
-                    titulo.innerHTML =`Hora de Voltar á superfície.<br>
+            break
+        case "descanso-longo":
+            titulo.innerHTML = `Hora de Voltar à superfície.<br>
                 <strong class="app__title-strong">Faça uma pausa longa.</strong>`
-                
-        default:
-            break;
+            break
     }
 }
 
-const contagemRegressiva = ()=> {
-    if(TempoDecorridoEmSegundos <= 0){
-       audioTempoFinalizado.play()
+const contagemRegressiva = () => {
+    if (TempoDecorridoEmSegundos <= 0) {
+        audioTempoFinalizado.play()
         alert('Tempo finalizado!')
         zerar()
         return
@@ -85,34 +80,29 @@ const contagemRegressiva = ()=> {
     mostrarTempo()
 }
 
-startPauseBT.addEventListener('click',iniciarOuPausar)
-
+startPauseBT.addEventListener('click', iniciarOuPausar)
 
 function iniciarOuPausar() {
-
-    if(intervaloId){
+    if (intervaloId) {
         audioPausa.play()
         zerar()
         return
     }
     audioPlay.play()
-    intervaloId = setInterval(contagemRegressiva,1000)
+    intervaloId = setInterval(contagemRegressiva, 1000)
     iniciarOuPausarBT.textContent = "Pausar"
-    iniciarOuPausarBtIcone.setAttribute('src' ,`/imagens/pause.png`)
-    
+    iniciarOuPausarBtIcone.setAttribute('src', './imagens/pause.png')
 }
 
-function zerar(){
+function zerar() {
     clearInterval(intervaloId)
     iniciarOuPausarBT.textContent = "Começar"
-    iniciarOuPausarBtIcone.setAttribute ('src',`/imagens/play_arrow.png`)
+    iniciarOuPausarBtIcone.setAttribute('src', './imagens/play_arrow.png')
     intervaloId = null
 }
 
 function mostrarTempo() {
     const tempo = new Date(TempoDecorridoEmSegundos * 1000)
-    const tempoFormatado = tempo.toLocaleTimeString('pt-br',{minute: '2-digit', second: '2-digit'})
+    const tempoFormatado = tempo.toLocaleTimeString('pt-br', { minute: '2-digit', second: '2-digit' })
     tempoNaTela.innerHTML = `${tempoFormatado}`
 }
-
-
